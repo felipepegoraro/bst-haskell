@@ -1,5 +1,6 @@
 module Main where
 
+-- import qualified Tree as T
 import Tree
 import Data.Monoid
 

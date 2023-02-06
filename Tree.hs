@@ -1,13 +1,5 @@
 module Tree where
 
--- data Tree x = Leaf x |
---     Node {
---       _left  :: (Tree x),
---       _value :: x,
---       _right :: (Tree x)
---     } | Void
---   deriving (Show)
-
 data Tree x = Leaf x | Node (Tree x) x (Tree x) | Void
   deriving (Show)
 
@@ -59,6 +51,7 @@ merge_tree t1@(Node l1 x1 r1) t2@(Node l2 x2 r2)
 
 -- TODO: removes a node from the tree.
 remove_node :: Ord a            => Tree a -> a -> Tree a
+remove_node Void _               = Void
 remove_node (Leaf x) y 
   | x == y                       = Void
   | otherwise                    = (Leaf x)
@@ -72,10 +65,11 @@ remove_node (Node l x r) value   =
 
 -- adds a new node to the tree.
 add_node :: Ord a  => Tree a -> a -> Tree a
+add_node Void x            = Leaf x
 add_node (Leaf x) y
   | x == y                 = Leaf x
-  | x > y                  = Node (Leaf y) x (remove_node (Leaf x) x)
-  | otherwise              = Node (remove_node (Leaf x) x) x (Leaf y) 
+  | x > y                  = Node (Leaf y) x Void
+  | otherwise              = Node Void x (Leaf y) 
 add_node (Node l x r) y
   | x == y                 = Node l x r
   | x > y                  = Node (add_node l y) x r
